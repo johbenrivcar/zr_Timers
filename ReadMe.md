@@ -89,7 +89,7 @@ These methods and properties are members of the class zr_clsTimer. They are invo
 
 | Method              | Parameters         | Notes                                                                                                                                                                                                                                                                                                                                                     |
 | :-------------------- | -------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Start               | None               | Starts the timer. The expiry time is calculated on start. Tick events will be issued at intervals specified using**expiresAt** method.                                                                                                                                                                                                                    |
+| Start               | None               | Starts the timer. The expiry time is calculated on start. Tick events will be issued at intervals specified using **tickerInterval** method.                                                                                                                                                                                                              |
 | Pause               | None               | Pauses a timer if it is running. During pause no Tick or Expired events are emitted. The Expiry date/time are not affected by pause. If expiry time is passed during pause, the Expired event will be emitted as soon as Continue method is called.                                                                                                       |
 | Continue            | None               | Continues the timer after a pause. Tick and Expired events will be issued after Continue has been called                                                                                                                                                                                                                                                  |
 | Cancel              | None               | Stops the timer and removes it from the timer system. The Cancelled event is emitted.                                                                                                                                                                                                                                                                     |
@@ -104,22 +104,14 @@ These methods and properties are members of the class zr_clsTimer. They are invo
 These constants are globally-defined in the module zr_Contants.bas. Within the system a "tick" represents a time period of one second. This is the minmum time unit that the system can handle.
 
 
-| Constant      | Value     | Notes                                                                                                  |
-| ----------------  | ----------- | -------------------------------------------------------------------------------------------------------- |
-| MaxTickNumber    | 999999999 | Represents a point in time about 30 years from the start time of the system, used to represent "Never" |
-| NullTickNumber   |      -99  |    Represents "Not set to any value" in a tick number field                                       |
-| SecondsPerDay    |  86400    |    Number of seconds in a day                                                                     |
-| OneSecond       |    00:00:01   |  A date constant of one second in length                                                       |
-| FiveSeconds     |   00:00:05    |                                                                                                        |
-|  TenSeconds     |  00:00:10     |                                                                                                        |
-|  OneMinute     |  00:01:00     |                                                                                                        |
-|  FiveMinutes     |  00:05:00     |                                                                                                        |
-|  OneHour     |  01:00:00     |                                                                                                        |
-
-
-
-asdfsadf
-
-asdfasdfasdf
-
-asdfadsf
+| Constant       | Value     | Notes                                                                                                  |
+| ---------------- | ----------- | -------------------------------------------------------------------------------------------------------- |
+| MaxTickNumber  | 999999999 | Represents a point in time about 30 years from the start time of the system, used to represent "Never" |
+| NullTickNumber | -99       | Represents "Not set to any value" in a tick number field                                               |
+| SecondsPerDay  | 86400     | Number of seconds in a day                                                                             |
+| OneSecond      | 00:00:01  | A date constant of one second in length                                                                |
+| FiveSeconds    | 00:00:05  |                                                                                                        |
+| TenSeconds     | 00:00:10  |                                                                                                        |
+| OneMinute      | 00:01:00  |                                                                                                        |
+| FiveMinutes    | 00:05:00  |                                                                                                        |
+| OneHour        | 01:00:00  |                                                                                                        |
