@@ -40,31 +40,37 @@ This has the advantage that all code is included in your application, so it does
 
 ##### Example code
 
----
-
-Option Explicit
-
-Dim WithEvents tt As zr_clsTimer
-
-Public Sub t1()
-Set tt = zr_newTimer(tenSeconds)
-tt.Start
-End Sub
-
-Private Sub tt_Expired(eventData As zr_Timers.zr_clsEventData)
-Debug.Print "Timer has Expired"
-End Sub
-
----
+![](assets/20230326_170051_CodeExample1.png)
 
 # Programming guide
 
 ## Core methods
 
-These methods and properties are members of the zr_Core module
+These methods and properties are members of the zr_Core module. They are globally available
 
 
 | Method      | Parameters                                                              | Notes                                                                                                                                                                   |
 | :------------ | :------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | zr_start    | None                                                                    | Initialises the timer system. Is called implicitly by most other core methods.                                                                                          |
 | zr_newTimer | timeToExpiry [o date], expiryDateTime [o date], tickerInterval [o date] | All arguments are optional. There are methods that correspond to these arguments which can be set separately.<br /> Returns a new Timer object with the given settings. |
+
+## Timer methods
+
+These methods and properties are members of the class zr_clsTimer. They are invoked on an instance of the class.
+
+
+| Method              | Parameters         | Notes                                                                                                                                                                                                                                                                                                                                                     |
+| :-------------------- | -------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Start               | None               | Starts the timer. The expiry time is calculated on start. Tick events will be issued at intervals specified using**expiresAt** method.                                                                                                                                                                                                                    |
+| Pause               | None               | Pauses a timer if it is running. During pause no Tick or Expired events are emitted. The Expiry date/time are not affected by pause. If expiry time is passed during pause, the Expired event will be emitted as soon as Continue method is called.                                                                                                       |
+| Continue            | None               | Continues the timer after a pause. Tick and Expired events will be issued after Continue has been called                                                                                                                                                                                                                                                  |
+| Cancel              | None               | Stops the timer and removes it from the timer system. The Cancelled event is emitted.                                                                                                                                                                                                                                                                     |
+| lifeTime            | pLifeTime [m date] | The parameter sets the period of time that is to elapse between Start and Expiry. The period starts when Start method is called. If the timer is already running, it will run for the life time starting from now.                                                                                                                                        |
+| expiresAt           | pExpiryDateTime    | The parameter sets the exact date and time when the timer will expire. This is fixed and will not depend on when Start was called.                                                                                                                                                                                                                        |
+| tickerInterval      | pTickerInterval    | The parameter specifies the time period to elapse between ticks. Minimum time is 1 second.                                                                                                                                                                                                                                                                |
+| userData [property] | ud [m object]      | Specifies any object that contains data to be passed in events emitted by this timer. The object is referenced dynamically so subsequent changes made to any properties of the object will be reflected on later events emitted by the timer. May be set to Nothing. May be set while the timer is running. Syntax: Set oTimer.userData = userDataObject. |
+| ID                  |                    | Returns a long integer that is a unique identifier of this Timer instance.                                                                                                                                                                                                                                                                                |
+
+w
+
+wertwertwe
