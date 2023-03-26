@@ -43,6 +43,8 @@ Option Explicit
     '// The base date/timer from which all tick numbers are
     '// calculated.
     Private xBaseTime As Date
+    Private xMaxTime As Date
+    
     
     '// ============================================================================ Logger object
     Public zr_Log As New zr_clsLog
@@ -165,7 +167,7 @@ End Sub
 
 '// ==================================================================================
 '// Create a new timer instance.
-Public Function zr_NewTimer(Optional timeToExpiry As Date = 0, Optional expiryDateTime As Date = 0, Optional tickInterval As Date = 0) As zr_clsTimer
+Public Function zr_NewTimer(Optional timeToExpiry As Date = 0, Optional expiryDateTime As Date = 0, Optional tickerInterval As Date = 0) As zr_clsTimer
 '// Returns a newly-minted timer object. Normally invoked by one of the
 '// clsTimerOptions functions .run or .zr_Start
 R "zr_NewTimer"
@@ -174,7 +176,7 @@ R "zr_NewTimer"
     Dim oNewTimer As New zr_clsTimer
     
     '// if options have been supplied then configure the timer with the options
-    oNewTimer.setConfig timeToExpiry, expiryDateTime, tickInterval
+    oNewTimer.setConfig timeToExpiry, expiryDateTime, tickerInterval
     
     '// Return the new timer
     Set zr_NewTimer = oNewTimer
@@ -206,6 +208,14 @@ Public Function zr_TickBaseTime() As Date
     End If
     
     zr_TickBaseTime = xBaseTime
+    
+End Function
+
+Public Function zr_MaxTime() As Date
+    If xMaxTime = 0 Then
+        xMaxTime = zr_TimeFromTickNumber(MaxTickNumber)
+    End If
+    zr_MaxTime = xMaxTime
     
 End Function
 
@@ -288,7 +298,7 @@ Public Function zr_ev2string(nEventType As ev_EventType) As String
 '         ev_Continue = 6
 '    End Enum
 
-    Const kEventTypeCodes = "00000 START TICK* EXPIR REMOV PAUSE RESUM "
+    Const kEventTypeCodes = "00000 START TICK* EXPIR CANCL PAUSE RESUM "
     On Error Resume Next
     zr_ev2string = Mid(kEventTypeCodes, nEventType * 6 + 1, 5)
     If Err.Number <> 0 Or Len(zr_ev2string) <> 5 Then zr_ev2string = "*N/A*"

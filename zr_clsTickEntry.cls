@@ -147,5 +147,12 @@ End Sub
     End Function
 
 Private Sub Class_Terminate()
-    Debug.Print "Entry #" & Me.tickNumber & " xxxxxxx Terminated"
+    Debug.Print "TickEntry #" & Me.tickNumber & " xxxxxxx Being terminated"
+    
+    Dim keys: keys = dTimers.keys
+    Dim key
+    For Each key In keys
+        dTimers(key).Cancel
+    Next key
+    
 End Sub

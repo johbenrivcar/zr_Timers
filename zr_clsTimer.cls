@@ -48,6 +48,7 @@ Public iQueuedTickNumber As Long        '// the tick number at which this timer 
 
 '// Start event info
 Private xTimerHasBeenStarted As Boolean '// indicates that the user has called Start
+Private xStartTickNumber As Long        '// Tick number when .start was called
 Private xStartEventRaised As Boolean    '// indicates that a Start event has been raised
 
 Private xIsRunning As Boolean      '// indicates that the Start event has been issued
@@ -346,6 +347,10 @@ Public Function Start() As zr_clsTimer
         xError "Attempt to start timer that was removed"
         Exit Function
         '/-------------->>>>>>
+    Case xHasExpired
+        xError "Attempt to start timer that was expired"
+        Exit Function
+        
     End Select
     
     xTimerHasBeenStarted = True
@@ -355,12 +360,30 @@ Public Function Start() As zr_clsTimer
         Set xStreamMonitor = zr_StreamMonitor(streamLabel)
     End If
     
-    CalcNextEventTickNumber
+    xStartTickNumber = zr_TickNumberFromTime(Now)
+    xExpirySet = True
+    xNoExpirySet = False
     
+    Select Case True
+    Case xExpiresAtTime > zr_TickBaseTime And xExpiresAtTime < zr_MaxTime
+    
+        xExpiryTickNumber = zr_TickNumberFromTime(xExpiresAtTime)
+    Case xLifeTicks > 0
+        xExpiryTickNumber = xStartTickNumber + xLifeTicks
+        xExpiresAtTime = zr_TimeFromTickNumber(xExpiryTickNumber)
+    Case Else
+        xExpirySet = False
+        xNoExpirySet = True
+        xExpiresAtTime = 0
+        xExpiryTickNumber = MaxTickNumber
+    End Select
+    
+    CalcNextEventTickNumber
     
     Me.report "After Start"
 
     xTickQueue.setQueueTimer
+    
 End Function
 
 
@@ -531,7 +554,7 @@ End Sub
 Public Sub setConfig(Optional lifeTime As Date = 0, Optional expiryDateTime As Date = 0, Optional tickerInterval As Date = 0)
     Select Case True
     Case lifeTime > 0
-       xLifeTime = lifeTime
+       Me.lifeTime lifeTime
         
     Case expiryDateTime > 0
         Me.expiresAt expiryDateTime
@@ -613,8 +636,8 @@ End Sub
 
 Public Function clone() As zr_clsTimer
     Dim oClone As zr_clsTimer
-    Set oClone = ZR_Core.getNewTimer()
-    oClone.setConfig xLifeTime, xExpiresAtTime, xTickerInterval, xStreamLabel
+    Set oClone = ZR_Core.zr_NewTimer()
+    oClone.setConfig xLifeTime, xExpiresAtTime, xTickerInterval
     oClone.label = increment(Me.label)
     oClone.streamLabel = Me.streamLabel
     
@@ -668,8 +691,8 @@ Public Sub report(Optional label As String = "")
     log IIf(xIntervalTickerIsActive, "| Is ticking interval=" & xTickerInterval, "| Is not ticking")
     log "| Started " & xTimerHasBeenStarted & ", event raised " & xStartEventRaised
     
-    If xHasNotExpired Then log "| Not expired, expiry at tick " & xExpiryTickNumber
-    log "| Expiry tick number: " & xExpiryTickNumber
+    If xHasNotExpired Then log "| Not expired, expiry at tick " & xExpiryTickNumber Else log "| Has expired"
+    log "| Expiry tick number: " & xExpiryTickNumber & " (Current time tick=" & zr_TickNumberFromTime(Now) & ")"
     log "| Next event " & ZR_Core.zr_ev2string(xNextEventType) & " at tick #" & xNextEventTickNumber
     
     
@@ -722,6 +745,7 @@ End Sub
 
 
 Private Sub Class_Terminate()
-    Debug.Print "xxxxxxxxxxxxxx TERMINATE"
+    Debug.Print "Timer #" & Me.ID & " xxxxxxxxxx Being terminated"
+    
 End Sub
 
