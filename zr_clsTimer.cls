@@ -591,8 +591,12 @@ End Function
 Public Function lifeTime(pLifeTime As Date) As zr_clsTimer
     xLifeTime = pLifeTime
     xLifeTicks = zr_TicksFromInterval(pLifeTime)
-    xExpiresAtTime = 0
+    If xIsRunning Then
+        expiresAt Now + pLifeTime
+        Exit Function
+    End If
     
+    xExpiresAtTime = 0
     
     Set lifeTime = Me
     
