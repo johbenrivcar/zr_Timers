@@ -30,7 +30,7 @@ If you have any problems or questions please email me on jbrc@tigersoftware.co.u
 #### Limitations
 
 * Shortest time resolution is one second. These timers cannot be used to trigger events more frequently than at one-second intervals.
-* Passage of time is not strictly in line with real time. Although in general the timers will align with real time when invoked, if processing of one timer event takes a long time, other events will be delayed and will be emitted later than expected. Also, any Tick events that are missed due to overlapping event processing may be missed completely. So you cannot rely on getting a consistent number of Ticks in a given time period - for example you may get less than 60 ticks in a minute on a timer with a 1-second tickerInterval.
+* Passage of time is not strictly in line with real time. Although in general the timers will align with real time when invoked, if processing of one timer event takes a long time, other events will be delayed and will be emitted later than expected. Also, any Tick events that are missed due to overlapping event processing may be missed completely. So you cannot rely on getting a consistent number of Ticks in a given time period - for example you may get fewer than 60 ticks in a minute on a timer with a 1-second tickerInterval.
 * zr_timers should not be started from within a function that is called directly or indirectly from a UDF in a worksheet cell. Timers started in this way may work in unpredictable ways, and may cause the timer system to halt.
 
 ## Files in the ZR_Timers repository
