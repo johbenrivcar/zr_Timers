@@ -631,7 +631,7 @@ End Property
 Private Sub Class_Initialize()
     myID = ZR_Core.zr_NextTimerID
     xLogLabel = "Timer #" & myID
-    Debug.Print "Timer #" & myID & " ********* Initialize"
+    log "Timer #" & myID & " ********* Initialize"
     
     Reset
     
@@ -749,7 +749,7 @@ End Sub
 
 
 Private Sub Class_Terminate()
-    Debug.Print "Timer #" & Me.ID & " xxxxxxxxxx Being terminated"
+    log "Timer #" & Me.ID & " xxxxxxxxxx Being terminated"
     
 End Sub
 
