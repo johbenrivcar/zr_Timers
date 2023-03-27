@@ -13,6 +13,10 @@ All implementation is in vba, all source code is included. Implementation of the
 * Events emitted by ZR Timer objects can be monitored in any workbook or class module. Events use the vba **WithEvents** syntax which ensures compile-time validation. Multiple handlers can be defined for events emitted by a single Timer object.
 * ZR Timer implements event queue management which means efficient event generation, regardless of how many Timer objects are created. This reduces overhead and ensures orderly execution of event handling functions.
 
+**Questions?**
+
+If you have any problems or questions please email me on jbrc@tigersoftware.co.uk
+
 ## Summary of features
 
 * Timers are created as vba objects. Events are handled by using **WithEvents** syntax.
