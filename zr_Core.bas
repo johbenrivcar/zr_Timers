@@ -134,8 +134,9 @@ Public Function zr_StartLog(Optional logToDebug = False) As zr_clsLog
     
     If logToDebug Then zr_Log.sendToDebugStart
     zr_Log.startLog
-    Set zr_StartLog = zr_Log
     
+    '// Return log object for chaining
+    Set zr_StartLog = zr_Log
 End Function
 
 Public Sub zr_StopLog()
@@ -145,7 +146,8 @@ End Sub
 
 
 '//========================================================
-'// Is called initially to set some options. Need not be called by the user
+'// Is called to set initial conditions. Need not be called by the user, this
+'// function is called by other functions as required.
 Public Sub zr_Start()
     Static bStarted As Boolean
     If bStarted Then Exit Sub
@@ -155,10 +157,11 @@ R "zr_Start"
 
     '// Set the base time for calculating ticks
     zr_TickBaseTime
-    
 L
 End Sub
-
+Public Sub zr_Stop()
+    End
+End Sub
 '// Provides a means to force Continue of the timing loop, if it has failed, without resetting the project
 '// You can call this from the debug window: zr_Core.zr_RestartAppTimer
 Public Sub zr_RestartAppTimer()
@@ -171,6 +174,7 @@ Public Function zr_NewTimer(Optional timeToExpiry As Date = 0, Optional expiryDa
 '// Returns a newly-minted timer object. Normally invoked by one of the
 '// clsTimerOptions functions .run or .zr_Start
 R "zr_NewTimer"
+    zr_Start
     
     '// Create the new timer instance
     Dim oNewTimer As New zr_clsTimer
@@ -185,7 +189,9 @@ L
 End Function
 
 
-
+'// Tells the logging system to send log messages to the debug (immediate) window, when
+'// logging is turned on, or to stop sending messages to debug, even if logging is
+'// turned on.
 Public Function zr_SendLogToDebug(Optional TF As Boolean = True) As zr_clsLog
     If TF Then
         zr_Log.sendToDebugStart
@@ -194,7 +200,6 @@ Public Function zr_SendLogToDebug(Optional TF As Boolean = True) As zr_clsLog
     End If
     
     Set zr_SendLogToDebug = zr_Log
-    
 End Function
 
 '// Calculates and sets the base time from which all tick numbers

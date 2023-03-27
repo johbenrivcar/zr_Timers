@@ -2,14 +2,18 @@
 
 This project provides and implementation of timer objects for use in MS-Excel macro-enabled spreadsheets.
 
-All implementation is in vba, all source code is included
+Timer objects emit events timed at intervals specified by the user. These timed events can be monitored by functions written in Worksheet and Class modules. Any number of different timers firing at different intervals can be created.
 
-## Overview
+All implementation is in vba, all source code is included. Implementation of the timer uses Application.OnTime at the core to provide the event generation, but setting and resetting Application.OnTime is handled implicitly and is hidden from the application programmer.
 
-* ZR source modules (.bas and .cls) must be included in the application Excel spreadsheet, or in a separate Excel spreadsheet whose project is referenced from the application sheet (a suitable spreadsheet is included in the project with latest versions of the source modules)
-* Timers are vba objects which are configured at run time to fire events at intervals defined by the user, or as a result of user actions. Events are processed by application event handlers which attach to the timer through **WithEvents** syntax.
+##### Why use ZR_Timers?
 
-#### Summary of features
+* Excel's in-built Application.OnTime function is limited to executing a single function defined in a vba Module or a Worksheet. It is unable to execute a function within an instance of a class defined in an Excel Class Module.
+* Writing code to handle setting and resetting timers, and handling timer expiry is complex and prone to problems. Timer handling functions must be referred to by name passed as a string, so are not subject to syntax checking.
+* Events emitted by ZR Timer objects can be monitored in any workbook or class module. Events use the vba **WithEvents** syntax which ensures compile-time validation. Multiple handlers can be defined for events emitted by a single Timer object.
+* ZR Timer implements event queue management which means efficient event generation, regardless of how many Timer objects are created. This reduces overhead and ensures orderly execution of event handling functions.
+
+## Summary of features
 
 * Timers are created as vba objects. Events are handled by using **WithEvents** syntax.
 * Timers may fire **Tick events** at a regular inteval >= 1 second.
@@ -19,7 +23,7 @@ All implementation is in vba, all source code is included
 * Timers may be Paused and Continued. During Pause, Tick events are suppressed. Pausing does not affect expiry.
 * Timers emit events on change of state. Possible events are: **Started**, **Tick**, **Expired**, **Paused**, **Continued**, **Cancelled**.
 
-#### Files in the repository
+## Files in the ZR_Timers repository
 
 1. ReadMe.md
    * This document
@@ -45,7 +49,8 @@ All implementation is in vba, all source code is included
 10. zr_clsTickQueue.cls
     * Class module used internally by the system. Not used directly by applications
 11. zr_clsTimer.cls
-    * Class implementing the Timer functionality for use by applications. New instances are returned by calls to the core function zr_newTimer().
+    * Class implementing the Timer functionality for use by applications. A new Timer instances is obtained by a call to the Core function zr_newTimer().
+    * Events are monitored by using WithEvents syntax with the Timer object and then defining handlers for different event types.
 
 ## How to install
 
@@ -89,7 +94,7 @@ These methods and properties are members of the class zr_clsTimer. They are invo
 
 | Method              | Parameters         | Notes                                                                                                                                                                                                                                                                                                                                                     |
 | :-------------------- | -------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Start               | None               | Starts the timer. The expiry time is calculated on start. Tick events will be issued at intervals specified using **tickerInterval** method.                                                                                                                                                                                                              |
+| Start               | None               | Starts the timer. The expiry time is calculated on start. Tick events will be issued at intervals specified using**tickerInterval** method.                                                                                                                                                                                                               |
 | Pause               | None               | Pauses a timer if it is running. During pause no Tick or Expired events are emitted. The Expiry date/time are not affected by pause. If expiry time is passed during pause, the Expired event will be emitted as soon as Continue method is called.                                                                                                       |
 | Continue            | None               | Continues the timer after a pause. Tick and Expired events will be issued after Continue has been called                                                                                                                                                                                                                                                  |
 | Cancel              | None               | Stops the timer and removes it from the timer system. The Cancelled event is emitted.                                                                                                                                                                                                                                                                     |
@@ -115,3 +120,4 @@ These constants are globally-defined in the module zr_Contants.bas. Within the s
 | OneMinute      | 00:01:00  |                                                                                                        |
 | FiveMinutes    | 00:05:00  |                                                                                                        |
 | OneHour        | 01:00:00  |                                                                                                        |
+| set o          |           |                                                                                                        |
