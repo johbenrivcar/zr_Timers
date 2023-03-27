@@ -81,7 +81,7 @@ This has the advantage that all code is included in your application, so it does
    * In the list of Available References find zr_Timers and set the check box
 4. Now use the zr_Timers methods in your application. You may need to qualify references by prefixing calls with **zr_Timers**.
 
-##### Example code
+## Example code
 
 ![](assets/20230326_170051_CodeExample1.png)
 
