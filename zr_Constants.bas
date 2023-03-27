@@ -42,7 +42,7 @@ Option Explicit
     Public Const TicksPerSecond = 1 ' Always set to 1 - testing on other values has not been done
     
 '// Public enumerators for status and type codes ========================
-'// Status code for timers
+'// Status code for timers (not used)
     Public Enum ts_TimerStatus
          ts_Ready = 0
          ts_Started = 1
@@ -51,6 +51,7 @@ Option Explicit
          ts_Expired = 4
     End Enum
 
+'// Status codes for the core system (not used)
     Public Enum cs_CoreStatus
       cs_Unstarted = 0
       cs_IdleNoTimers = 10
@@ -58,6 +59,7 @@ Option Explicit
       cs_SettingNextTick = 30
     End Enum
 
+'// Event types emitted by zr_clsTimer
     Public Enum ev_EventType
          ev_start = 1
          ev_tick = 2

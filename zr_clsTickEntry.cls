@@ -147,7 +147,7 @@ End Sub
     End Function
 
 Private Sub Class_Terminate()
-    Debug.Print "TickEntry #" & Me.tickNumber & " xxxxxxx Being terminated"
+    log "TickEntry #" & Me.tickNumber & " xxxxxxx Being terminated"
     
     Dim keys: keys = dTimers.keys
     Dim key
